@@ -1,0 +1,21 @@
+· Create a table STUDENT with following attributes: student_id, Name, department, mark 1, mark 2, cgpa and insert a minimum of 5 values to it.
+
+· Create table hostel_details with following attributes: std_id, stud_name, block, roomno and insert 5 rows for the table
+
+· Display the details of student and hostel_details table
+
+· Rename table hostel_details to hostel
+
+· Update the value of CGPA whose student_id is 103 from cgpa 7 to 8
+
+· Display the name of the students whose cgpa is more than 8
+
+· Display the name of student staying in block A of the table hostel
+
+· Display name of student who belong to cs dept.
+
+· Delete the name of student whose room number is 108
+
+Modify the department of the student’ anu’ from cs to ec
+
+
