@@ -1,0 +1,252 @@
+Implement DML commands like Insertion, Deletion, Modifying, Altering, and Updating records based on conditions.*
+
+Consider the employee database given below
+
+emp (emp_id,emp_name, Street_No, city)
+
+works (emp_id, company name, salary)
+
+company (company name, city)
+
+manages (emp_id, manager_id)
+
+Note: Emp_id should start with ‘E’ in Emp table and emp_id in works table must be the emp_id from emptable .emp_id and manager_id in manages table must be the emp_id from emp table.
+
+·       Add these four tables with sufficient constraints.
+
+·       Alter table emp add a constraint that emp_name cannot be null
+
+·       Find the names of all employees who work for SBI.
+
+·        Find all employees in the database who live in the same cities as the companies for which they work.
+
+·       Find all employees and their managers in the database who live in the same cities and on the same street number as do their managers.
+
+·       Find all employees who earn more than the average salary of all employees of their company.
+
+·        Find the company that pay least total salary along with the salary paid.
+
+·       Give all managers of SBI a 10 percent raise.
+
+·        Find the company that has the most employees
+
+·       Find those companies whose employees earn a higher salary, on average than the average salary at Indian Bank.
+
+Query to find the name and salary of all employees who earn more than each employee of ‘Indian Bank’
+
+
+
+
+ CREATE TABLE emp ( emp_id VARCHAR(10) PRIMARY KEY CHECK (emp_id LIKE
+'E%'),
+    -> emp_name VARCHAR (50),
+    -> Street_no INT,
+    -> city VARCHAR (50));
+
+ INSERT INTO emp (emp_id, emp_name, Street_No, city)
+    -> VALUES
+    -> ('E101', 'Ravi', 10, 'Mumbai'),
+    -> ('E102', 'Anu', 12, 'Delhi'),
+    -> ('E103', 'John', 15, 'Mumbai'),
+    -> ('E104', 'Meera', 20, 'Bangalore'),
+    -> ('E105', 'Sara', 25, 'Chennai');
+
+SELECT * FROM emp;
++--------+----------+-----------+-----------+
+| emp_id | emp_name | Street_no | city      |
++--------+----------+-----------+-----------+
+| E10001 | Manu     |        10 | Mumbai    |
+| E101   | Ravi     |        10 | Mumbai    |
+| E102   | Anu      |        12 | Delhi     |
+| E103   | John     |        15 | Mumbai    |
+| E104   | Meera    |        20 | Bangalore |
+| E105   | Sara     |        25 | Chennai   |
++--------+----------+-----------+-----------+
+
+ 
+ CREATE TABLE works (
+    ->     emp_id VARCHAR(10),
+    ->     company_name VARCHAR(50),
+    ->     salary DECIMAL(10, 2),
+    ->     PRIMARY KEY(emp_id, company_name),
+    ->     FOREIGN KEY(emp_id) REFERENCES emp(emp_id)
+    -> );
+
+INSERT INTO works (emp_id, company_name, salary)
+    -> VALUES
+    -> ('E101', 'SBI', 50000),
+    -> ('E102', 'TCS', 60000),
+    -> ('E103', 'Indian Bank', 55000),
+    -> ('E104', 'Infosys', 70000),
+    -> ('E105', 'Wipro', 65000);
+
+SELECT * FROM works;
++--------+--------------+----------+
+| emp_id | company_name | salary   |
++--------+--------------+----------+
+| E101   | SBI          | 50000.00 |
+| E102   | TCS          | 60000.00 |
+| E103   | Indian Bank  | 55000.00 |
+| E104   | Infosys      | 70000.00 |
+| E105   | Wipro        | 65000.00 |
++--------+--------------+----------+
+
+
+ CREATE TABLE company (
+    ->     company_name VARCHAR(50) PRIMARY KEY,
+    ->     city VARCHAR(50)
+    -> );
+
+INSERT INTO company (company_name, city)
+    -> VALUES
+    -> ('SBI', 'Mumbai'),
+    -> ('Infosys', 'Bangalore'),
+    -> ('TCS', 'Delhi'),
+    -> ('Wipro', 'Chennai'),
+    -> ('Indian Bank', 'Mumbai');
+
+SELECT * FROM company;
++--------------+-----------+
+| company_name | city      |
++--------------+-----------+
+| Indian Bank  | Mumbai    |
+| Infosys      | Bangalore |
+| SBI          | Mumbai    |
+| TCS          | Delhi     |
+| Wipro        | Chennai   |
++--------------+-----------+
+
+ CREATE TABLE manages (
+    ->     emp_id VARCHAR(10),
+    ->     manager_id VARCHAR(10),
+    ->     PRIMARY KEY(emp_id, manager_id),
+    ->     FOREIGN KEY(emp_id) REFERENCES emp(emp_id),
+    ->     FOREIGN KEY(manager_id) REFERENCES emp(emp_id)
+    -> );
+
+INSERT INTO manages (emp_id, manager_id)
+    -> VALUES
+    -> ('E101', 'E103'),  
+    -> ('E102', 'E104'),  
+    -> ('E103', 'E104'),  
+    -> ('E104', 'E105'),  
+    -> ('E105', 'E101');
+
+ SELECT * FROM manages;
++--------+------------+
+| emp_id | manager_id |
++--------+------------+
+| E105   | E101       |
+| E101   | E103       |
+| E102   | E104       |
+| E103   | E104       |
+| E104   | E105       |
++--------+------------+
+
+ALTER TABLE emp MODIFY emp_name VARCHAR(50) NOT NULL;
+Query OK, 0 rows affected (0.09 sec)
+
+ SELECT emp.emp_name FROM emp JOIN works ON emp.emp_id = works.emp_id WHERE works.company_name='SBI';
++----------+
+| emp_name |
++----------+
+| Ravi     |
++----------+
+1 row in set (0.00 sec)
+
+SELECT emp.emp_name
+    -> FROM emp
+    -> JOIN works ON emp.emp_id = works.emp_id
+    -> JOIN company ON works.company_name = company.company_name
+    -> WHERE emp.city = company.city;
++----------+
+| emp_name |
++----------+
+| Ravi     |
+| Anu      |
+| John     |
+| Meera    |
+| Sara     |
++----------+
+
+SELECT e1.emp_name AS Employee, e2.emp_name AS Manager
+    -> FROM emp e1
+    -> JOIN manages m ON e1.emp_id = m.emp_id
+    -> JOIN emp e2 ON m.manager_id = e2.emp_id
+    -> WHERE e1.city = e2.city AND e1.Street_No = e2.Street_No;
+Empty set (0.00 sec)
+
+SELECT emp_name, salary
+    -> FROM works w
+    -> JOIN emp e ON w.emp_id = e.emp_id
+    -> WHERE salary > (
+    ->     SELECT AVG(salary)
+    ->     FROM works
+    ->     WHERE company_name = w.company_name
+    -> );
+Empty set (0.00 sec)
+
+ SELECT company_name, SUM(salary) AS Total_Salary
+    -> FROM works
+    -> GROUP BY company_name
+    -> ORDER BY Total_Salary ASC
+    -> LIMIT 1;
++--------------+--------------+
+| company_name | Total_Salary |
++--------------+--------------+
+| SBI          |     50000.00 |
++--------------+--------------+
+
+ UPDATE works
+    -> SET salary = salary * 1.10
+    -> WHERE company_name = 'SBI' AND emp_id IN (
+    ->     SELECT manager_id
+    ->     FROM manages
+    -> );
+
+SELECT company_name, COUNT(emp_id) AS Number_of_Employees
+    -> FROM works
+    -> GROUP BY company_name
+    -> ORDER BY Number_of_Employees DESC
+    -> LIMIT 1;
++--------------+---------------------+
+| company_name | Number_of_Employees |
++--------------+---------------------+
+| SBI          |                   1 |
++--------------+---------------------+
+
+SELECT company_name
+    -> FROM works
+    -> GROUP BY company_name
+    -> HAVING AVG(salary) > (
+    ->     SELECT AVG(salary)
+    ->     FROM works
+    ->     WHERE company_name = 'Indian Bank'
+    -> );
++--------------+
+| company_name |
++--------------+
+| TCS          |
+| Infosys      |
+| Wipro        |
++--------------+
+
+
+SELECT e.emp_name, w.salary
+    -> FROM works w
+    -> JOIN emp e ON w.emp_id = e.emp_id
+    -> WHERE w.salary > ALL (
+    ->     SELECT w2.salary
+    ->     FROM works w2
+    ->     WHERE w2.company_name = 'Indian Bank'
+    -> );
++----------+----------+
+| emp_name | salary   |
++----------+----------+
+| Anu      | 60000.00 |
+| Meera    | 70000.00 |
+| Sara     | 65000.00 |
++----------+----------+
+
+
+
