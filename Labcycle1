@@ -18,4 +18,109 @@
 
 Modify the department of the student’ anu’ from cs to ec
 
+ CREATE TABLE STUDENT (
+    ->     student_id INT PRIMARY KEY,
+    ->     Name VARCHAR(50),
+    ->     department VARCHAR(50),
+    ->     mark1 INT,
+    ->     mark2 INT,
+    ->     cgpa DECIMAL(3, 2)
+    -> );
 
+INSERT INTO STUDENT (student_id, Name, department, mark1, mark2, cgpa)
+    -> VALUES
+    -> (101, 'Ravi', 'CS', 85, 90, 8.5),
+    -> (102, 'Anu', 'CS', 80, 85, 7.5),
+    -> (103, 'John', 'EC', 75, 70, 7.0),
+    -> (104, 'Meera', 'EE', 90, 95, 9.0),
+    -> (105, 'Sara', 'ME', 88, 84, 8.2);
+
+
+ CREATE TABLE hostel_details (
+    ->     std_id INT,
+    ->     stud_name VARCHAR(50),
+    ->     block CHAR(1),
+    ->     roomno INT,
+    ->     PRIMARY KEY(std_id)
+    -> );
+
+ CREATE TABLE hostel_details (
+    ->     std_id INT,
+    ->     stud_name VARCHAR(50),
+    ->     block CHAR(1),
+    ->     roomno INT,
+    ->     PRIMARY KEY(std_id)
+    -> );
+
+INSERT INTO hostel_details (std_id, stud_name, block, roomno)
+    -> VALUES
+    -> (101, 'Ravi', 'A', 101),
+    -> (102, 'Anu', 'B', 102),
+    -> (103, 'John', 'A', 103),
+    -> (104, 'Meera', 'C', 104),
+    -> (105, 'Sara', 'B', 105);
+
+SELECT * FROM STUDENT;
++------------+-------+------------+-------+-------+------+
+| student_id | Name  | department | mark1 | mark2 | cgpa |
++------------+-------+------------+-------+-------+------+
+|        101 | Ravi  | CS         |    85 |    90 | 8.50 |
+|        102 | Anu   | CS         |    80 |    85 | 7.50 |
+|        103 | John  | EC         |    75 |    70 | 7.00 |
+|        104 | Meera | EE         |    90 |    95 | 9.00 |
+|        105 | Sara  | ME         |    88 |    84 | 8.20 |
++------------+-------+------------+-------+-------+------+
+
+ SELECT * FROM hostel_details;
++--------+-----------+-------+--------+
+| std_id | stud_name | block | roomno |
++--------+-----------+-------+--------+
+|    101 | Ravi      | A     |    101 |
+|    102 | Anu       | B     |    102 |
+|    103 | John      | A     |    103 |
+|    104 | Meera     | C     |    104 |
+|    105 | Sara      | B     |    105 |
++--------+-----------+-------+--------+
+
+ALTER TABLE hostel_details RENAME TO hostel;
+Query OK, 0 rows affected (0.02 sec)
+
+ SELECT Name
+    -> FROM STUDENT
+    -> WHERE cgpa > 8.0;
++-------+
+| Name  |
++-------+
+| Ravi  |
+| Meera |
+| Sara  |
++-------+
+
+ SELECT stud_name
+    -> FROM hostel
+    -> WHERE block = 'A';
++-----------+
+| stud_name |
++-----------+
+| Ravi      |
+| John      |
++-----------+
+
+ SELECT Name
+    -> FROM STUDENT
+    -> WHERE department = 'CS';
++------+
+| Name |
++------+
+| Ravi |
+| Anu  |
++------+
+
+DELETE FROM hostel
+    -> WHERE roomno = 108;
+Query OK, 0 rows affected (0.00 sec)
+
+UPDATE STUDENT
+    -> SET department = 'EC'
+    -> WHERE Name = 'Anu';
+Query OK, 1 row affected (0.01 sec)
