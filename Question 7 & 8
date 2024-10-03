@@ -1,0 +1,170 @@
+7 . 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ans ) CREATE table employee (employee_no int primary key , employee_name varchar(100) , job varchar(100) ,department_no int , salary float );
+
+insert into employee values( 1 , 'Arya' ,'Manager' , 3 , 200000.0);
+insert into employee values( 2 , 'Kiran' ,'Sales Executive' , 1 , 25000.0);
+ insert into employee values( 3 , 'Kavya' ,'Product Manager' , 5 , 50000.0);
+insert into employee values( 4 , 'Raju' ,'MD' , 2 , 150000.0);
+insert into employee values( 5 , 'Riya' ,'CEO' ,4 , 250000.0);
+
+
+select * from employee;
++-------------+---------------+-----------------+---------------+--------+
+| employee_no | employee_name | job             | department_no | salary |
++-------------+---------------+-----------------+---------------+--------+
+|           1 | Arya          | Manager         |             3 | 200000 |
+|           2 | Kiran         | Sales Executive |             1 |  25000 |
+|           3 | Kavya         | Product Manager |             5 |  50000 |
+|           4 | Raju          | MD              |             2 | 150000 |
+|           5 | Riya          | CEO             |             4 | 250000 |
++-------------+---------------+-----------------+---------------+--------+
+
+create view employee_view as select employee_no , employee_name , job , department_no , salary from employee;
+
+ select *  from employee_view;
++-------------+---------------+-----------------+---------------+--------+
+| employee_no | employee_name | job             | department_no | salary |
++-------------+---------------+-----------------+---------------+--------+
+|           1 | Arya          | Manager         |             3 | 200000 |
+|           2 | Kiran         | Sales Executive |             1 |  25000 |
+|           3 | Kavya         | Product Manager |             5 |  50000 |
+|           4 | Raju          | MD              |             2 | 150000 |
+|           5 | Riya          | CEO             |             4 | 250000 |
++-------------+---------------+-----------------+---------------+--------+
+
+ select employee_no , employee_name, department_no , job from employee_view;
+
++-------------+---------------+---------------+-----------------+
+| employee_no | employee_name | department_no | job             |
++-------------+---------------+---------------+-----------------+
+|           1 | Arya          |             3 | Manager         |
+|           2 | Kiran         |             1 | Sales Executive |
+|           3 | Kavya         |             5 | Product Manager |
+|           4 | Raju          |             2 | MD              |
+|           5 | Riya          |             4 | CEO             |
+|           6 | Abhi          |             1 | ASP             |
++-------------+---------------+---------------+-----------------+
+
+select * from employee_view where job='ASP';
+
++-------------+---------------+------+---------------+--------+
+| employee_no | employee_name | job  | department_no | salary |
++-------------+---------------+------+---------------+--------+
+|           6 | Abhi          | ASP  |             1 |  20000 |
++-------------+---------------+------+---------------+--------+
+
+update employee_view set department_no=5 where employee_no=1;
+
+select * from employee;
++-------------+---------------+-----------------+---------------+--------+
+| employee_no | employee_name | job             | department_no | salary |
++-------------+---------------+-----------------+---------------+--------+
+|           1 | Arya          | Manager         |             5 | 200000 |
+|           2 | Kiran         | Sales Executive |             1 |  25000 |
+|           3 | Kavya         | Product Manager |             5 |  50000 |
+|           4 | Raju          | MD              |             2 | 150000 |
+|           5 | Riya          | CEO             |             4 | 250000 |
+|           6 | Abhi          | ASP             |             1 |  20000 |
++-------------+---------------+-----------------+---------------+--------+
+
+ drop view employee_view;
+Query OK, 0 rows affected (0.01 sec)
+
+select * from employee_view;
+ERROR 1146 (42S02): Table 'labcycle.employee_view' doesn't exist
+
+
+8. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+ans) 
+
+Create table Employee (employee_id int primary key , employee_name varchar(50),designation varchar(50) ,department_no int , employee_salary decimal);
+
+ insert into Employee values( 1 , 'Arya' ,'Manager' , 3 , 200000.0);
+ insert into Employee values( 2 , 'Kiran' ,'Sales Executive' , 1 , 25000.0);
+ insert into Employee values( 3 , 'Kavya' ,'Product Manager' , 5 , 50000.0);
+insert into Employee values( 4 , 'Raju' ,'MD' , 2 , 150000.0);
+insert into Employee values( 5 , 'Riya' ,'CEO' ,4 , 250000.0);
+
+select * from Employee;
++-------------+---------------+-----------------+---------------+-----------------+
+| employee_id | employee_name | designation     | department_no | employee_salary |
++-------------+---------------+-----------------+---------------+-----------------+
+|           1 | Arya          | Manager         |             3 |          200000 |
+|           2 | Kiran         | Sales Executive |             1 |           25000 |
+|           3 | Kavya         | Product Manager |             5 |           50000 |
+|           4 | Raju          | MD              |             2 |          150000 |
+|           5 | Riya          | CEO             |             4 |          250000 |
++-------------+---------------+-----------------+---------------+-----------------+
+
+set autocommit=0;
+
+savepoint a;
+
+ select * from Employee;
++-------------+---------------+-----------------+---------------+-----------------+
+| employee_id | employee_name | designation     | department_no | employee_salary |
++-------------+---------------+-----------------+---------------+-----------------+
+|           1 | Arya          | Manager         |             3 |          200000 |
+|           2 | Kiran         | Sales Executive |             1 |           25000 |
+|           3 | Kavya         | Product Manager |             5 |           50000 |
+|           4 | Raju          | MD              |             2 |          150000 |
+|           5 | Riya          | CEO             |             4 |          250000 |
++-------------+---------------+-----------------+---------------+-----------------+
+
+ insert into Employee values( 10 , 'liya' ,'ISP' ,4 , 45000.0);
+
+select * from Employee;
++-------------+---------------+-----------------+---------------+-----------------+
+| employee_id | employee_name | designation     | department_no | employee_salary |
++-------------+---------------+-----------------+---------------+-----------------+
+|           1 | Arya          | Manager         |             3 |          200000 |
+|           2 | Kiran         | Sales Executive |             1 |           25000 |
+|           3 | Kavya         | Product Manager |             5 |           50000 |
+|           4 | Raju          | MD              |             2 |          150000 |
+|           5 | Riya          | CEO             |             4 |          250000 |
+|          10 | liya          | ISP             |             4 |           45000 |
++-------------+---------------+-----------------+---------------+-----------------+
+
+rollback to a;
+Query OK, 0 rows affected (0.01 sec)
+
+commit;
+Query OK, 0 rows affected (0.00 sec)
+
