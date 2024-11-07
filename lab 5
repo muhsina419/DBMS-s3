@@ -1,1 +1,41 @@
 
+mysql> DELIMITER //
+mysql> CREATE TRIGGER after_event_insert
+    -> AFTER INSERT ON Event
+    -> FOR EACH ROW
+    -> BEGIN
+    -> INSERT INTO prizes (money , event_id, 1 , year(curdate()));
+    -> VALUES (1500, NEW.event_id, 1, year(curdate()));
+    -> INSERT INTO prizes (money , event_id, 1 , year
+    -> )
+    -> VALUES (1000, NEW.event_id, 2, year(curdate()));
+    -> END //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1 , year(curdate()));
+VALUES (1500, NEW.event_id, 1, year(curdate()));
+INSERT IN' at line 5
+mysql> DELIMITER ;
+mysql> DELIMITER //
+mysql> CREATE TRIGGER after_event_insertion
+    -> AFTER INSERT ON Event
+    -> FOR EACH ROW
+    -> BEGIN
+    -> INSERT INTO prizes (money , event_id, stand , year)
+    -> VALUES (1500, NEW.event_id, 1, year(curdate()));
+    -> INSERT INTO prizes (money , event_id, stand , year)
+    -> VALUES (1000, NEW.event_id, 2, year(curdate()));
+    -> INSERT INTO prizes (money , event_id, stand , year)
+    -> VALUES (500, NEW.event_id, 1, year(curdate()));
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql> INSERT INTO Event ( event_id , name , descr , city )
+    -> values (1 ,'Tech Fest ' , 'Technology expo' ,'delhi');
+ERROR 1146 (42S02): Table 'labcycle.Prizes' doesn't exist
+mysql> INSERT INTO Event ( event_id , name , descr , city )
+    -> values (3 ,'Tech Fest ' , 'Technology expo' ,'delhi');
+ERROR 1146 (42S02): Table 'labcycle.Prizes' doesn't exist
+mysql> create table Prizes (prize_id int primary key , name varchar(50) , descr varchar(50) , stand int , year int ,
+
+
+
